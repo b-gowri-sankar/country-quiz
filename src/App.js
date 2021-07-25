@@ -1,24 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+// import QuizCard from './components/Cards/QuizCard';
+import ResultsCard from './components/Cards/ResultsCard';
+import styled from 'styled-components';
 
-function App() {
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100vh;
+ .Country{
+    position: absolute;
+    top: 10%;
+    left:35%;
+    color: white;
+    /* font-size: 25px; */
+ }
+`;
+
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Wrapper style={{backgroundImage: "url(/img/background.png)",backgroundRepeat: 'no-repeat', backgroundSize:'cover', width: '100%', backgroundPosition: 'Center'}}>
+      <h1 className='Country'>Country Quiz</h1>
+      {/* <QuizCard /> */}
+      <ResultsCard />
+    </Wrapper>
   );
 }
 
