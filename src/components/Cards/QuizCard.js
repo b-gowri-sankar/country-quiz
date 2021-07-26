@@ -12,6 +12,12 @@ export const Container = styled.div`
     background-color: white;
     padding: 20px;
     border-radius: 17px;
+
+    /* @media screen and (min-width: 1000px){
+        left:40%;
+        right: 40%;
+        background-color: beige;
+    } */
     /* height: 70vh; */
 `;
 
