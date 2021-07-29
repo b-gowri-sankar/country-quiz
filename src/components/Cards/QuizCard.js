@@ -29,7 +29,7 @@ const Card = styled.div`
         padding-bottom: 1em;
     }
     p{
-        border: 2px solid rgba(96, 102, 208, 0.7);
+        
         padding: 5px 10px;
         margin-bottom: 20px;
         border-radius: 16px;
@@ -68,15 +68,47 @@ const Next = styled.a`
 const QuizCard = (props) => {
 
     const { setCount, count, qtType, Options, Country } = props;
+    console.log('Country', Country)
+    const [borderColor, setBorderColor] = React.useState({
+        0: {
+            border: '2px solid rgba(96, 102, 208, 0.7)',
+            background: 'white'
+        },
+        1: {
+            border: '2px solid rgba(96, 102, 208, 0.7)',
+            background: 'white'
+        },
+        2: {
+            border: '2px solid rgba(96, 102, 208, 0.7)',
+            background: 'white'
+        },
+        3: {
+            border: '2px solid rgba(96, 102, 208, 0.7)',
+            background: 'white'
+        }
+    })
 
-    const checkAnswer = (country_value) => {
+
+    const checkAnswer = (e, index) => {
         if (qtType === 'flag') {
-           
+            if (e.target.id === Country.name) {
+               setBorderColor({...borderColor, index:{...borderColor[index], background:'#EA8282'}})
+            }
+            else {
+                setBorderColor({...borderColor, index:{...borderColor[index], background:'#60BF88'}})
+            }
         }
         else {
+            if(e.target.id === Country.capital){
+                setBorderColor({...borderColor, index:{...borderColor[index], background:'#EA8282'}})
+             }
+             else {
+                 setBorderColor({...borderColor, index:{...borderColor[index], background:'#60BF88'}})
+             }
                 
         }
     }
+
 
     return (
         <Container>
@@ -85,7 +117,14 @@ const QuizCard = (props) => {
                 {qtType ==='flag' ? <img src={Country.flag} alt='country flag' className='flag'/> : null}
                 <h1>{qtType === 'flag' ? 'Which Country Does this Flag Belong to ?': `${Country.name} is the capital of`}</h1>
                 {Options && Options.map((option, index)=> (
-                    <p key={ index } id={qtType === 'flag' ? option.name : option.capital} onClick={(e) => checkAnswer(e.target.id)}>{index + 1}<span>{qtType === 'flag' ? option.name : option.capital}</span></p>
+                    <p  
+                        key={index} style={{ border: borderColor[index].border, backgroundColor: borderColor[index].background }}
+                        id={qtType === 'flag' ? option.name : option.capital}
+                        onClick={(e) => checkAnswer(e, index)}
+                    >
+                        {index + 1}
+                        <span>{qtType === 'flag' ? option.name : option.capital}</span>
+                    </p>
                 ))}
             </Card>
             <Next onClick={()=>setCount(count+1)}>Next</Next>
