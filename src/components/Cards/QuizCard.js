@@ -25,7 +25,7 @@ const Card = styled.div`
     h1{
         font-size: 23px;
         color: #2F527B;
-        padding-top: 3em;
+        padding-top: 1em;
         padding-bottom: 1em;
     }
     p{
@@ -44,10 +44,14 @@ const Card = styled.div`
             padding-left: 10px;
         }
     }
-    img{
+    .man{
         position:relative;
         margin-top: -5.2em;
         float: right;
+    }
+    .flag{
+        width: 100px;
+        height: 100%;
     }
 `;
 const Next = styled.a`
@@ -61,18 +65,30 @@ const Next = styled.a`
     border-radius: 12px;
 `;
 
-const QuizCard = () => {
+const QuizCard = (props) => {
+
+    const { setCount, count, qtType, Options, Country } = props;
+
+    const checkAnswer = (country_value) => {
+        if (qtType === 'flag') {
+           
+        }
+        else {
+                
+        }
+    }
+
     return (
         <Container>
             <Card>
-                <img src={Standing} alt='man celebrating' />
-                <h1>Kuala Lumpur is the capital of</h1>
-                <p>A.<span> Vieatnam </span></p>
-                <p>B.<span> Malasiya</span></p>
-                <p>C.<span> Delhi</span></p>
-                <p>D.<span>Kabul</span> </p>
+                <img src={Standing} alt='man celebrating' className='man'/>
+                {qtType ==='flag' ? <img src={Country.flag} alt='country flag' className='flag'/> : null}
+                <h1>{qtType === 'flag' ? 'Which Country Does this Flag Belong to ?': `${Country.name} is the capital of`}</h1>
+                {Options && Options.map((option, index)=> (
+                    <p key={ index } id={qtType === 'flag' ? option.name : option.capital} onClick={(e) => checkAnswer(e.target.id)}>{index + 1}<span>{qtType === 'flag' ? option.name : option.capital}</span></p>
+                ))}
             </Card>
-            <Next>Next</Next>
+            <Next onClick={()=>setCount(count+1)}>Next</Next>
         </Container>
     )
 }
