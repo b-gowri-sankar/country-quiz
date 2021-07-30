@@ -7,7 +7,7 @@ import React from 'react';
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 120vh;
+  height: 110vh;
  .Country{
     position: absolute;
     top: 10%;
