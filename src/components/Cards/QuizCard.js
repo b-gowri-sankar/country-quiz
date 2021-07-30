@@ -149,7 +149,7 @@ const QuizCard = (props) => {
                     </p>
                 ))}
             </Card>
-            <Next onClick={() => NextCard() }>Next</Next>
+            {(setting.success === -1) ? null : <Next onClick={() => NextCard() }>Next</Next>}
         </Container>
     )
 }
