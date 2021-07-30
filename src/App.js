@@ -7,13 +7,24 @@ import React from 'react';
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 120vh;
  .Country{
     position: absolute;
     top: 10%;
-    left:35%;
-    right: 35%;
+    left:30%;
+    right: 30%;
     color: white;
+    @media only screen and (max-width: 1000px){
+      left: 25%;
+    }
+    @media only screen and (max-width: 775px){
+      top: 3%;
+    }
+    @media only screen and (max-width: 450px){
+        font-size: 30px;
+        left: 5%;
+        right: 5%;
+    }
     /* font-size: 25px; */
  }
 `;
@@ -71,13 +82,22 @@ const App = () => {
     }
   }
   shuffleArray(Options);
-  console.log(count);
-  console.log(qtType);
   return (
     <Wrapper style={{backgroundImage: "url(/img/background.png)",backgroundRepeat: 'no-repeat', backgroundSize:'cover', width: '100%', backgroundPosition: 'Center'}}>
       <h1 className='Country'>Country Quiz</h1>
-      {DisplayCard.quiz && <QuizCard setCount={setCount} count={count} qtType={qtType} Options={Options} Country={Country} setDisplayCard={ setDisplayCard }/>}
-      {DisplayCard.results&&<ResultsCard />}
+      {DisplayCard.quiz &&
+        <QuizCard
+          setCount={setCount}
+          count={count}
+          qtType={qtType}
+          Options={Options}
+          Country={Country}
+          setDisplayCard={setDisplayCard} />}
+      {DisplayCard.results && <ResultsCard
+        count={count}
+        setDisplayCard={setDisplayCard}
+        setCount = {setCount}
+      />}
     </Wrapper>
   );
 }

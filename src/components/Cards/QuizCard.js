@@ -6,19 +6,25 @@ export const Container = styled.div`
 
     position: absolute;
     top:20%;
-    left: 35%;
-    right: 35%;
+    left: 30%;
+    right: 30%;
     /* bottom: 30%; */
     background-color: white;
     padding: 20px;
     border-radius: 17px;
 
-    /* @media screen and (min-width: 1000px){
-        left:40%;
-        right: 40%;
-        background-color: beige;
-    } */
-    /* height: 70vh; */
+    @media only screen and (max-width: 1000px){
+        left: 25%;
+        right: 25%;
+    }
+    @media only screen and (max-width: 775px){
+      left: 20%;
+      right: 20%;
+    }
+    @media only screen and (max-width: 450px){
+        left: 5%;
+        right: 5%;
+    }
 `;
 
 const Card = styled.div`
@@ -29,7 +35,7 @@ const Card = styled.div`
         padding-bottom: 1em;
     }
     p{
-        
+        border: 2px solid rgba(96, 102, 208, 0.7);  
         padding: 5px 10px;
         margin-bottom: 20px;
         border-radius: 16px;
@@ -42,6 +48,26 @@ const Card = styled.div`
         }
         span{
             padding-left: 10px;
+        }
+    }
+    .success{
+        border: 2px solid #60BF88;
+        background-color: #60BF88;
+        color: white;
+        &:hover{
+            border: 2px solid #60BF88;
+            background-color: #60BF88;
+            color: white;
+        }
+    }
+    .fail{
+        border:2px solid #EA8282;
+        background-color:#EA8282;
+        color: white;
+        &:hover{
+            border:2px solid #EA8282;
+            background-color:#EA8282;
+            color: white;
         }
     }
     .man{
@@ -67,67 +93,63 @@ const Next = styled.a`
 
 const QuizCard = (props) => {
 
-    const { setCount, count, qtType, Options, Country } = props;
-    console.log('Country', Country)
-    const [borderColor, setBorderColor] = React.useState({
-        0: {
-            border: '2px solid rgba(96, 102, 208, 0.7)',
-            background: 'white'
-        },
-        1: {
-            border: '2px solid rgba(96, 102, 208, 0.7)',
-            background: 'white'
-        },
-        2: {
-            border: '2px solid rgba(96, 102, 208, 0.7)',
-            background: 'white'
-        },
-        3: {
-            border: '2px solid rgba(96, 102, 208, 0.7)',
-            background: 'white'
-        }
-    })
+    const { setCount, count, qtType, Options, Country, setDisplayCard } = props;
 
+    const [setting, setSetting] = React.useState({
+        success: -1,
+        failure: -1
+    });
+
+    // console.log('Country', Country)
+   
 
     const checkAnswer = (e, index) => {
-        if (qtType === 'flag') {
-            if (e.target.id === Country.name) {
-               setBorderColor({...borderColor, index:{...borderColor[index], background:'#EA8282'}})
+            let indexSuccess = Options.findIndex(index => index.name===Country.name )
+            if (indexSuccess === index) {
+                console.log('this is right answer')
+                setSetting({...setting,success: index})
             }
             else {
-                setBorderColor({...borderColor, index:{...borderColor[index], background:'#60BF88'}})
-            }
-        }
-        else {
-            if(e.target.id === Country.capital){
-                setBorderColor({...borderColor, index:{...borderColor[index], background:'#EA8282'}})
-             }
-             else {
-                 setBorderColor({...borderColor, index:{...borderColor[index], background:'#60BF88'}})
-             }
+                console.log('this is wrong answer')
                 
-        }
+                setSetting({...setting,success: indexSuccess, failure: index})
+            }
     }
 
+    console.log('this is settings: ',setting)
+
+    const NextCard = () => {
+        if (setting.failure !== -1) {
+            setDisplayCard({
+                quiz: false,
+                results: true
+            })
+        }
+        else {
+            setCount(count + 1)
+            setSetting({...setting, success: -1, failure: -1})
+        }
+    }
 
     return (
         <Container>
             <Card>
                 <img src={Standing} alt='man celebrating' className='man'/>
                 {qtType ==='flag' ? <img src={Country.flag} alt='country flag' className='flag'/> : null}
-                <h1>{qtType === 'flag' ? 'Which Country Does this Flag Belong to ?': `${Country.name} is the capital of`}</h1>
+                <h1>{qtType === 'flag' ? 'Which Country Does this Flag Belong to ?': `${Country.capital} is the capital of`}</h1>
                 {Options && Options.map((option, index)=> (
-                    <p  
-                        key={index} style={{ border: borderColor[index].border, backgroundColor: borderColor[index].background }}
-                        id={qtType === 'flag' ? option.name : option.capital}
+                    <p
+                        className={`${index === setting.success ? 'success': null} ${index === setting.failure ? 'fail': ''}`}
+                        key={option.name}
+                        id={option.name}
                         onClick={(e) => checkAnswer(e, index)}
                     >
                         {index + 1}
-                        <span>{qtType === 'flag' ? option.name : option.capital}</span>
+                        <span>{option.name}</span>
                     </p>
                 ))}
             </Card>
-            <Next onClick={()=>setCount(count+1)}>Next</Next>
+            <Next onClick={() => NextCard() }>Next</Next>
         </Container>
     )
 }

@@ -36,14 +36,20 @@ const Link = styled.a`
     border-radius: 12px;
 `;
 
-const ResultsCard = () => {
+const ResultsCard = ({ count, setDisplayCard, setCount }) => {
     return (
         <Container>
             <Contain>
                 <img src={Winner} alt='winner ' />
                 <h1>Results</h1>
-                <p>you got <span>4</span> correct answers</p>
-                <Link>Try Again</Link>
+                <p>you got <span>{ count }</span> correct answers</p>
+                <Link onClick={() => {
+                    setDisplayCard({
+                        quiz: true,
+                        results: false,
+                    });
+                    setCount(0)
+                }}>Try Again</Link>
             </Contain>
         </Container>
     )
